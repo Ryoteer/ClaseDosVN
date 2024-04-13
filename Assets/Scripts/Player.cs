@@ -5,6 +5,13 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Player : MonoBehaviour
 {
+    [Header("Animator")]
+    [SerializeField] private Animator _animator;
+    [SerializeField] private string _xAxisName = "xAxis";
+    [SerializeField] private string _zAxisName = "zAxis";
+    [SerializeField] private string _onJumpName = "onJump";
+    [SerializeField] private string _onLandName = "onLanding";
+
     [Header("Inputs")]
     [Tooltip("Selects the key the player will use to jump.")]
     [SerializeField] private KeyCode _jumpKey = KeyCode.Space;
@@ -27,13 +34,25 @@ public class Player : MonoBehaviour
         _rb.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
+    private void Start()
+    {
+        if (!_animator)
+        {
+            _animator = GetComponentInChildren<Animator>();
+        }
+    }
+
     private void Update()
     {
         _xAxis = Input.GetAxis("Horizontal");
         _zAxis = Input.GetAxis("Vertical");
 
+        _animator.SetFloat(_xAxisName, _xAxis);
+        _animator.SetFloat(_zAxisName, _zAxis);
+
         if (Input.GetKeyDown(_jumpKey))
         {
+            _animator.SetTrigger(_onJumpName);
             Jump();
         }
     }
@@ -56,5 +75,11 @@ public class Player : MonoBehaviour
     private void Jump()
     {
         _rb.AddForce(transform.up * _jumpForce, ForceMode.Impulse);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        print($"<color=red>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</color>");
+        _animator.SetTrigger(_onLandName);
     }
 }
