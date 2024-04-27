@@ -16,14 +16,19 @@ public class PlayerAvatar : MonoBehaviour
         _parent.SetAttackState(state);
     }
 
-    public void Attack(int dmg)
+    public void Attack()
     {
-        _parent.Attack(Random.Range(dmg / 2, dmg * 2));
+        _parent.Attack();
     }
 
-    public void SetJumpState(int state)
+    public void RangeAttack()
     {
-        _parent.SetJumpState(state);
+        _parent.RangeAttack();
+    }
+
+    public void AreaAttack()
+    {
+        _parent.AreaAttack();
     }
 
     public void Jump()
