@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
 
 public class Platform : MonoBehaviour
@@ -11,6 +12,9 @@ public class Platform : MonoBehaviour
 
     private bool _isActive;
 
+    private NavMeshModifier _modifier;
+    private NavMeshSurface _navMesh;
+
     private Collider _collider;
     private Material _mat;
 
@@ -21,6 +25,15 @@ public class Platform : MonoBehaviour
         _collider = GetComponent<Collider>();
         _mat = GetComponent<Renderer>().material;
         _ogColor = _mat.color;
+
+        if (!_navMesh)
+        {
+            _navMesh = GetComponentInParent<NavMeshSurface>();
+        }
+        if (!_modifier)
+        {
+            _modifier = GetComponent<NavMeshModifier>();
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -47,8 +60,12 @@ public class Platform : MonoBehaviour
             yield return null;
         }
 
+        _modifier.enabled = false;
+
         _mat.color = new Color(_ogColor.r, _ogColor.g, _ogColor.b, 0f);
         _collider.enabled = false;
+
+        _navMesh.BuildNavMesh();
 
         yield return new WaitForSeconds(_intermission);
 
@@ -61,8 +78,12 @@ public class Platform : MonoBehaviour
             yield return null;
         }
 
+        _modifier.enabled = true;
+
         _mat.color = new Color(_ogColor.r, _ogColor.g, _ogColor.b, 1f);
         _collider.enabled = true;
+
+        _navMesh.BuildNavMesh();
 
         _isActive = !_isActive;
     }
