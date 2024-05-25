@@ -1877,6 +1877,7 @@ GameObject:
   - component: {fileID: 4970380028298410912}
   - component: {fileID: 3693265083124784411}
   - component: {fileID: 8706151262725520482}
+  - component: {fileID: 4973448575915581059}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -1962,6 +1963,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f45131c0753fecd4e9b0dad6d759eaae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _attackDmg: 20
+  _leftAttackOrigin: {fileID: 8626510740461008434}
+  _rightAttackOrigin: {fileID: 7770071044528206516}
+  _attackDist: 0.75
+  _rangeAttackRadius: 0.25
+  _rangeAttackDist: 15
+  _areaAttackRadius: 2.5
+  _attackMask:
+    serializedVersion: 2
+    m_Bits: 256
   _animator: {fileID: 736682917025139345}
   _xAxisName: xAxis
   _zAxisName: zAxis
@@ -1975,12 +1986,6 @@ MonoBehaviour:
   _attackKey: 323
   _areaAttackKey: 325
   _rangeAttackKey: 324
-  _leftAttackOrigin: {fileID: 8626510740461008434}
-  _rightAttackOrigin: {fileID: 7770071044528206516}
-  _attackDist: 0.75
-  _attackMask:
-    serializedVersion: 2
-    m_Bits: 256
   _groundCheckDist: 0.5
   _groundCheckMask:
     serializedVersion: 2
@@ -1989,9 +1994,29 @@ MonoBehaviour:
   _moveCheckMask:
     serializedVersion: 2
     m_Bits: 128
-  _attackDmg: 20
   _jumpForce: 5
   _movSpeed: 5
+--- !u!205 &4973448575915581059
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6374133543747205769}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0.016499996, y: 0.93489903, z: 0.012270756}
+  m_Size: 2.217607
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.29864743
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 6227170593757765034}
+    - renderer: {fileID: 3224302158926132098}
+    - renderer: {fileID: 3371591836218676056}
+  m_Enabled: 1
 --- !u!1 &6458567337702577364
 GameObject:
   m_ObjectHideFlags: 0
