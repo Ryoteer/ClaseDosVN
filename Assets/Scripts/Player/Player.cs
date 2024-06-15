@@ -2,20 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody), typeof(AudioSource))]
 public class Player : MonoBehaviour
 {
-    [Header("<color=red>Combat</color>")]
-    [Tooltip("Modifies how much damage our Player deals.")]
-    [SerializeField] private int _attackDmg = 20;
-    [SerializeField] private Transform _leftAttackOrigin;
-    [SerializeField] private Transform _rightAttackOrigin;
-    [SerializeField] private float _attackDist = .75f;
-    [SerializeField] private float _rangeAttackRadius = .25f;
-    [SerializeField] private float _rangeAttackDist = 15f;
-    [SerializeField] private float _areaAttackRadius = 2.5f;
-    [SerializeField] private LayerMask _attackMask;
-
     [Header("<color=yellow>Animator</color>")]
     [SerializeField] private Animator _animator;
     [SerializeField] private string _xAxisName = "xAxis";
@@ -26,6 +15,21 @@ public class Player : MonoBehaviour
     [SerializeField] private string _onRangeAttackName = "onRangeAttack";
     [SerializeField] private string _isMovingName = "isMoving";
     [SerializeField] private string _isGroundedName = "isGrounded";
+
+    [Header("<color=purple>Audio</color>")]
+    [SerializeField] private AudioClip[] _stepClips;
+    [SerializeField] private AudioClip[] _attackClips;
+
+    [Header("<color=red>Combat</color>")]
+    [Tooltip("Modifies how much damage our Player deals.")]
+    [SerializeField] private int _attackDmg = 20;
+    [SerializeField] private Transform _leftAttackOrigin;
+    [SerializeField] private Transform _rightAttackOrigin;
+    [SerializeField] private float _attackDist = .75f;
+    [SerializeField] private float _rangeAttackRadius = .25f;
+    [SerializeField] private float _rangeAttackDist = 15f;
+    [SerializeField] private float _areaAttackRadius = 2.5f;
+    [SerializeField] private LayerMask _attackMask;
 
     [Header("<color=green>Inputs</color>")]
     [Tooltip("Selects the key the player will use to jump.")]
@@ -53,6 +57,7 @@ public class Player : MonoBehaviour
     private float _xAxis = 0f, _zAxis = 0f;
     private Vector3 _dir = new(), _transformOffset = new(), _moveOrigin = new(), _moveCheckDir = new();
 
+    private AudioSource _source;
     private Rigidbody _rb;
 
     private Ray _groundCheckRay, _moveCheckRay, _attackRay;
@@ -63,6 +68,8 @@ public class Player : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _rb.angularDrag = 1f;
         _rb.constraints = RigidbodyConstraints.FreezeRotation;
+
+        _source = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -198,6 +205,30 @@ public class Player : MonoBehaviour
         _moveCheckRay = new Ray(_moveOrigin, _moveCheckDir);
 
         return Physics.Raycast(_moveCheckRay, _moveCheckDist, _moveCheckMask);
+    }
+
+    public void PlayStepClip()
+    {
+        if (_source.isPlaying)
+        {
+            _source.Stop();
+        }
+
+        _source.clip = _stepClips[Random.Range(0, _stepClips.Length)];
+
+        _source.Play();
+    }
+
+    public void PlayAttackClip()
+    {
+        if (_source.isPlaying)
+        {
+            _source.Stop();
+        }
+
+        _source.clip = _attackClips[Random.Range(0, _attackClips.Length)];
+
+        _source.Play();
     }
 
     private void OnDrawGizmosSelected()
